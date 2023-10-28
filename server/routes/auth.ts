@@ -8,16 +8,16 @@ import { z } from "zod";
 const router = express.Router();
 
 // added zod input validation 
-let signUpValidate = z.object({
-  title: z.string().min(1),
-  description: z.string().min(1),
+const signUpValidate = z.object({
+  username: z.string().min(1).max(50),
+  password: z.string().min(1).max(20),
 })
 
 router.post('/signup', async (req, res) => {
   let parsedInput = signUpValidate.safeParse(req.body)
   if (!parsedInput.success) {
     return res.status(403).json({
-      msg: "error"
+      error: parsedInput.error
     });
   }
   const username = parsedInput.data.username
